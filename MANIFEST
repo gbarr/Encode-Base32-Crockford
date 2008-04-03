@@ -1,0 +1,9 @@
+Build.PL
+MANIFEST
+README
+lib/Encode/Base32/Crockford.pm
+t/base32.t
+t/pod.t
+t/pod_coverage.t
+Makefile.PL
+META.yml

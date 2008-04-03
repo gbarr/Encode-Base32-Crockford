@@ -1,0 +1,21 @@
+---
+name: Encode-Base32-Crockford
+version: 1
+author:
+  - 'Earle Martin <hex@cpan.org>'
+abstract: |-
+  encode/decode numbers using Douglas Crockford's Base32
+  Encoding
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Scalar::Util: 0
+provides:
+  Encode::Base32::Crockford:
+    file: lib/Encode/Base32/Crockford.pm
+    version: 1
+generated_by: Module::Build version 0.2808
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

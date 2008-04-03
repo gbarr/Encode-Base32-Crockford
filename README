@@ -1,0 +1,75 @@
+NAME
+    Encode::Base32::Crockford - encode/decode numbers using Douglas
+    Crockford's Base32 Encoding
+
+DESCRIPTION
+    Douglas Crockford describes a *Base32 Encoding* at
+    <http://www.crockford.com/wrmg/base32.html>. He says: "[Base32 Encoding
+    is] a 32-symbol notation for expressing numbers in a form that can be
+    conveniently and accurately transmitted between humans and computer
+    systems."
+
+    This module provides methods to convert numbers to and from that
+    notation.
+
+SYNOPSIS
+        use Encode::Base32::Crockford qw(:all); # import all methods
+
+    or
+
+        use Encode::Base32::Crockford qw(base32_decode); # your choice of methods
+    
+        my $decoded = base32_decode_with_checksum("16JD");
+        my $encoded = base32_encode_with_checksum(1234);
+
+METHODS
+  base32_encode
+        print base32_encode(1234); # prints "16J"
+
+    Encode a base 10 number. Will die on inappropriate input.
+
+  base32_encode_with_checksum
+        print base32_encode_with_checksum(1234); # prints "16JD"
+
+    Encode a base 10 number with a checksum symbol appended. See the spec
+    for a description of the checksum mechanism. Wraps the previous method
+    so will also die on bad input.
+
+  base32_decode
+        print base32_decode("16J"); # prints "1234"
+
+    Decode an encoded number into base 10. Will die on inappropriate input.
+    The function is case-insensitive, and will strip any hyphens in the
+    input (see "normalize()").
+
+  base32_decode_with_checksum
+        print base32_decode_with_checksum("16JD"); # prints "1234"
+
+    Decode an encoded number with a checksum into base 10. Will die if the
+    checksum isn't correct, and die on inappropriate input.
+
+  normalize
+        my $string = "ix-Lb-oL";
+        my $clean = normalize($string);
+
+        # $string is now '1X1B01'.
+
+    The spec allows for certain symbols in encoded strings to be read as
+    others, to avoid problems with misread strings. This function will
+    perform the following conversions in the input string:
+
+    * "i" or "I" to 1
+    * "l" or "L" to 1
+    * "o" or "O" to 0
+
+    It will also remove any instances of "-" in the input, which are
+    permitted by the spec as chunking symbols to aid human reading of an
+    encoded string, and uppercase the output.
+
+AUTHOR
+    Earle Martin <hex@cpan.org>
+
+COPYRIGHT
+    This code is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
