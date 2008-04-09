@@ -1,4 +1,5 @@
 Build.PL
+CHANGES
 MANIFEST
 README
 lib/Encode/Base32/Crockford.pm

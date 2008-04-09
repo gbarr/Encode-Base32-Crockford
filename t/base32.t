@@ -3,7 +3,8 @@
 use warnings;
 use strict;
 
-use Test::More tests => 17;
+use Test::More tests => 19;
+use Test::Warn;
 
 use_ok('Encode::Base32::Crockford', qw(
 	base32_decode base32_decode_with_checksum
@@ -45,10 +46,20 @@ eval {
 like($@, qr/^Checksum "AA" is too long/, "spot overlong checksum");
 
 eval {
-		base32_decode("?", { "is_checksum" => 1});
+	base32_decode("?", { "is_checksum" => 1 });
 };
 
 like($@, qr/^String "\?" contains invalid characters/, "spot invalid checksum");
+
+warning_like {
+	my $foo = base32_decode("LO", { "mode" => "warn" });
+} qr/String "LO" corrected to "10"/, "warnings mode";
+
+eval {
+	my $foo = base32_decode("LO", { "mode" => "strict" });
+};
+
+like($@, qr/String "LO" requires normalization/, "strict mode");
 
 eval {
 	base32_decode_with_checksum("A0X");

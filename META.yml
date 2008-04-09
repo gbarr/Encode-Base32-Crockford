@@ -1,6 +1,6 @@
 ---
 name: Encode-Base32-Crockford
-version: 1
+version: 1.1
 author:
   - 'Earle Martin <hex@cpan.org>'
 abstract: |-
@@ -14,7 +14,7 @@ requires:
 provides:
   Encode::Base32::Crockford:
     file: lib/Encode/Base32/Crockford.pm
-    version: 1
+    version: 1.1
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

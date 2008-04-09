@@ -1,0 +1,12 @@
+# This file uses the Simplified Parseable Changes format.
+# http://use.perl.org/~hex/journal/34882
+
+version: 1.1
+date:    2008-04-09
+new!:    "strict" and "warn" modes for decoding methods.
+tests:   POD tests were failing on some platforms/Perls.
+docs:    Added this CHANGES file.
+
+# First release.
+version: 1
+date:    2008-04-03

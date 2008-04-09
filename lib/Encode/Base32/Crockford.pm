@@ -3,7 +3,7 @@ package Encode::Base32::Crockford;
 use warnings;
 use strict;
 
-our $VERSION = 1;
+our $VERSION = '1.1';
 
 use base qw(Exporter);
 our @EXPORT_OK = qw(
@@ -93,13 +93,27 @@ sub base32_encode_with_checksum {
 }
 
 sub normalize {
-	my $string = shift;
+	my ($string, $options) = @_;
+
+	my $orig_string = $string;
+
+	$string = uc($string);
+	_normalize_actions($orig_string, $string, $options->{"mode"}) if $string ne $orig_string;
 
 	# fix possible transcription errors and remove chunking symbols
-	$string =~ tr/IiLlOo-/111100/d;
+	_normalize_actions($orig_string, $string, $options->{"mode"}) if $string =~ tr/IiLlOo-/111100/d;
 
-	# TODO: produce optional warning if corrections were made
-	uc($string);
+	$string;
+}
+
+# Actions to carry out if normalize() is operating in a particular mode.
+sub _normalize_actions {
+	my ($old_string, $new_string, $mode) = @_;
+
+	$mode ||= '';
+
+	warn qq(String "$old_string" corrected to "$new_string") if $mode eq "warn";
+	die  qq(String "$old_string" requires normalization) if $mode eq "strict";
 }
 
 sub base32_decode {
@@ -108,8 +122,7 @@ sub base32_decode {
 	croak "string is undefined" if not defined $string;
 	croak "string is empty" if $string eq '';
 
-	# TODO: strict mode, object instead of transliterating
-	$string = normalize($string);
+	$string = normalize($string, $options);
 
 	my $valid;
 
@@ -153,13 +166,12 @@ sub base32_decode {
 }
 
 sub base32_decode_with_checksum {
-	my $string = shift;
+	my ($string, $options) = @_;
 	my $check_string = $string;
 
 	my $checksum = substr($check_string, (length($check_string) - 1), 1, "");
 
-	# TODO: if checksum is invalid, warn or die (user choice)
-	my $value = base32_decode($check_string);
+	my $value = base32_decode($check_string, $options);
 	my $checksum_value = base32_decode($checksum, { "is_checksum" => 1 });
 	my $modulo = $value % 37;
 
@@ -218,23 +230,29 @@ die on bad input.
 
     print base32_decode("16J"); # prints "1234"
 
+    print base32_decode("IO", { mode => "warn"   }); # print "32" but warn
+    print base32_decode("IO", { mode => "strict" }); # dies
+
 Decode an encoded number into base 10. Will die on inappropriate input. The
 function is case-insensitive, and will strip any hyphens in the input (see
-C<normalize()>).
+C<normalize()>). A hashref of options may be passed, with the only valid option
+being C<mode>. If set to "warn", normalization will produce a warning; if set
+to "strict", requiring normalization will cause a fatal error.
 
 =head2 base32_decode_with_checksum
 
     print base32_decode_with_checksum("16JD"); # prints "1234"
 
 Decode an encoded number with a checksum into base 10. Will die if the checksum
-isn't correct, and die on inappropriate input.
+isn't correct, and die on inappropriate input. Takes the same C<mode> option as
+C<base32_decode>.
 
 =head2 normalize
 
-    my $string = "ix-Lb-oL";
+    my $string = "ix-Lb-Ko";
     my $clean = normalize($string);
 
-    # $string is now '1X1B01'.
+    # $string is now '1X1BK0'.
 
 The spec allows for certain symbols in encoded strings to be read as others, to
 avoid problems with misread strings. This function will perform the following
