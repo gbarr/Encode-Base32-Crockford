@@ -1,6 +1,10 @@
 # This file uses the Simplified Parseable Changes format.
 # http://use.perl.org/~hex/journal/34882
 
+version: 1.11
+date:    2008-04-09
+fix:     Test::Warn was missing from prerequisites.
+
 version: 1.1
 date:    2008-04-09
 new!:    "strict" and "warn" modes for decoding methods.

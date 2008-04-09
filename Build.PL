@@ -10,6 +10,7 @@ my $mb = Module::Build->new(
 	'license'     => 'perl',
 	'requires'    => {
 		'Scalar::Util' => 0,
+		'Test::Warn'   => 0,
 	},
 	create_makefile_pl => 'passthrough',
 );
