@@ -75,7 +75,7 @@ like($@, qr/^"foo" isn't a number/, "spot non-number input");
 
 is(base32_encode(128), 40, "encode()");
 
-is(base32_encode(500), '15M', "encode larger number");
+is(base32_encode(500), 'FM', "encode larger number");
 
 is(base32_encode_with_checksum(128), '40H', "encode_with_checksum()");
 

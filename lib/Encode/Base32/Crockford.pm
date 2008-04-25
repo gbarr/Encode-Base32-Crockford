@@ -3,7 +3,7 @@ package Encode::Base32::Crockford;
 use warnings;
 use strict;
 
-our $VERSION = '1.12';
+our $VERSION = '1.2';
 
 use base qw(Exporter);
 our @EXPORT_OK = qw(
@@ -76,8 +76,13 @@ sub base32_encode {
 
 			redo DIGITS;
 		} else {
-			push @digits, $number;
-			return join '', reverse @digits;
+                        if ($number > 9) {
+                                push @digits, $SYMBOLS_INVERSE{$number};
+                        } else {
+                                push @digits, $number;
+                        }
+
+                        return join '', reverse @digits;
 		}
 	}
 }
@@ -280,5 +285,10 @@ Earle Martin <hex@cpan.org>
 
 This code is free software; you can redistribute it and/or modify it under 
 the same terms as Perl itself.
+
+=head1 REPOSITORY
+
+The Subversion repository for this distribution is available for inspection at 
+L<http://svn.downlode.org/Encode-Base32-Crockford/> .
 
 =cut

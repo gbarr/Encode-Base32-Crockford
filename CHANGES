@@ -1,6 +1,13 @@
 # This file uses the Simplified Parseable Changes format.
 # http://use.perl.org/~hex/journal/34882
 
+version: 1.2
+date:    2006-04-25
+fix!:    The inverse symbol table wasn't consulted for the final value,
+         meaning actual numbers rather than base32 characters were appended.
+         Bug report, patch and tests supplied by David Leadbeater - thanks.
+tests:   New tests for encoding and decoding.
+
 version: 1.12
 date:    2008-04-10
 tests:   Another fix - work on machines with or without Test::POD.

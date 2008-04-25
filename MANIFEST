@@ -4,6 +4,8 @@ MANIFEST
 README
 lib/Encode/Base32/Crockford.pm
 t/base32.t
+t/encode_decode.t
+t/encode_decode_checksum.t
 t/pod.t
 t/pod_coverage.t
 Makefile.PL
