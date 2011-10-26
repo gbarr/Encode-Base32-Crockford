@@ -14,75 +14,36 @@ our %EXPORT_TAGS = ( 'all' => \@EXPORT_OK );
 use Carp qw(croak);
 use Scalar::Util qw(looks_like_number);
 
+my %SYMBOLS;
+
 # Note: regular digits do not include I, L, O or U. See spec in documentation.
-my %SYMBOLS = ( 
-	A => 10,
-	B => 11,
-	C => 12,
-	D => 13,
-	E => 14,
-	F => 15,
-	G => 16,
-	H => 17,
-	J => 18,
-	K => 19,
-	M => 20,
-	N => 21,
-	P => 22,
-	Q => 23,
-	R => 24,
-	S => 25,
-	T => 26,
-	V => 27,
-	W => 28,
-	X => 29,
-	Y => 30,
-	Z => 31,
-	# checksum symbols only from here
-	'*' => 32,
-	'~' => 33,
-	'$' => 34,
-	'=' => 35,
-	'U' => 36,
-);
+@SYMBOLS{0..9,'A'..'H','J','K','M','N','P'..'T','V'..'Z'} = 0..31;
+
+# checksum symbols only from here
+@SYMBOLS{'*','~','$','=','U'} = 32..36;
 
 my %SYMBOLS_INVERSE = reverse %SYMBOLS;
 
 sub base32_encode {
-	my $number = shift;
+        my $number = shift;
 
-	die qq("$number" isn't a number) unless looks_like_number($number);
+        die qq("$number" isn't a number) unless looks_like_number($number);
 
-	my @digits;
+        return '0' unless $number;
 
-	# Cut a long story short: keep dividing by 32. Use the remainders to make the 
-	# digits of the converted number, right to left; the quotient goes to the next
-	# iteration to be divided again. When the quotient hits zero, i.e. there's not
-	# enough for 32 to be a divisor, the value being divided is the final digit.
-	DIGITS: {
-		my $quotient = int($number / 32);
+        my @digits;
 
-		if ($quotient != 0) {
-			my $remainder = $number % 32;
-			$number = $quotient;
+        # Cut a long story short: keep dividing by 32. Use the remainders to make the
+        # digits of the converted number, right to left; the quotient goes to the next
+        # iteration to be divided again. When the quotient hits zero, i.e. there's not
+        # enough for 32 to be a divisor, the value being divided is the final digit.
+        while ($number) {
+                my $remainder = $number % 32;
+                $number = int($number / 32);
+                push @digits, $SYMBOLS_INVERSE{$remainder};
+        }
 
-			if ($remainder > 9) {
-				push @digits, $SYMBOLS_INVERSE{$remainder};
-			} else {
-				push @digits, $remainder;
-			}
-
-			redo DIGITS;
-		} else {
-                        if ($number > 9) {
-                                push @digits, $SYMBOLS_INVERSE{$number};
-                        } else {
-                                push @digits, $number;
-                        }
-
-                        return join '', reverse @digits;
-		}
-	}
+        return join('', reverse @digits) || '0';
 }
 
 sub base32_encode_with_checksum {
@@ -90,9 +51,7 @@ sub base32_encode_with_checksum {
 
 	my $modulo = $number % 37;
 	
-	my $checksum = $modulo < 10 ? $modulo : $SYMBOLS_INVERSE{$modulo};
-
-	return base32_encode($number) . $checksum;
+	return base32_encode($number) . $SYMBOLS_INVERSE{$modulo};
 }
 
 sub normalize {
@@ -152,17 +111,9 @@ sub base32_decode {
 	# As any number raised to the power of 0 is 1, we can define an "offset" value
 	# of 1 for the first digit calculated and simply multiply the offset by 32
 	# after deriving the value for each digit.
-	my $offset = 1;
 
-	foreach my $symbol (reverse(split(//, $string))) {
-		my $subtotal;
-		my $value;
-		
-		$value = $symbol =~ /\d/ ? $symbol : $SYMBOLS{$symbol};
-		
-		$subtotal = $value * $offset;
-		$total += $subtotal;
-		$offset *= 32;
+	foreach my $symbol (split(//, $string)) {
+		$total = $total * 32 + $SYMBOLS{$symbol};
 	}
 	
 	$total;
