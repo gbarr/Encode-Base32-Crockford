@@ -4,13 +4,6 @@ NAME
 INSTALLATION
     To install this module, run the following commands:
     
-	    perl Build.PL
-	    ./Build
-        ./Build test
-	    ./Build install
-    
-    There is also support for the traditional installation method of:
-    
         perl Makefile.PL
         make
         make test

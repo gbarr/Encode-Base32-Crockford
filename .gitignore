@@ -1,0 +1,8 @@
+Makefile
+blib
+pm_to_blib
+*.bak
+.*.swp
+*~
+Encode-Base32-Crockford-*
+/.build

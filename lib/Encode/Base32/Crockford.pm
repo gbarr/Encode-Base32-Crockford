@@ -3,8 +3,6 @@ package Encode::Base32::Crockford;
 use warnings;
 use strict;
 
-our $VERSION = '1.3';
-
 use base qw(Exporter);
 our @EXPORT_OK = qw(
 	base32_encode base32_encode_with_checksum

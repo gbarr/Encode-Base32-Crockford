@@ -1,5 +1,6 @@
-# This file uses the Simplified Parseable Changes format.
-# http://use.perl.org/~hex/journal/34882
+{{$NEXT}}
+    * simplfy encode/decode logic
+    * new maintainer
 
 version: 1.2
 date:    2006-04-25
