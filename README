@@ -1,6 +1,5 @@
 NAME
-    Encode::Base32::Crockford - encode/decode numbers using Douglas
-    Crockford's Base32 Encoding
+    Encode::Base32::Crockford - encode/decode numbers using Douglas Crockford's Base32 Encoding
 
 INSTALLATION
     To install this module, run the following commands:
@@ -31,7 +30,10 @@ METHODS
     See module perldoc.
 
 AUTHOR
-    Earle Martin <hex@cpan.org>
+    Graham Barr <gbarr@cpan.org>
+
+CREDITS
+    The original module was written by Earle Martin <hex@cpan.org>
 
 COPYRIGHT
    This code is free software; you can redistribute it and/or modify it under

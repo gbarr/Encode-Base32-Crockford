@@ -3,7 +3,7 @@ package Encode::Base32::Crockford;
 use warnings;
 use strict;
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 use base qw(Exporter);
 our @EXPORT_OK = qw(
@@ -192,8 +192,7 @@ __END__
 
 =head1 NAME
 
-Encode::Base32::Crockford - encode/decode numbers using Douglas Crockford's Base32
-Encoding
+Encode::Base32::Crockford - encode/decode numbers using Douglas Crockford's Base32 Encoding
 
 =head1 DESCRIPTION
 
@@ -279,7 +278,11 @@ the output.
 
 =head1 AUTHOR
 
-Earle Martin <hex@cpan.org>
+Graham Barr <gbarr@cpan.org>
+
+=head1 CREDITS
+
+The original module was written by Earle Martin <hex@cpan.org>
 
 =head1 COPYRIGHT
 
@@ -288,7 +291,7 @@ the same terms as Perl itself.
 
 =head1 REPOSITORY
 
-The Subversion repository for this distribution is available for inspection at 
-L<http://svn.downlode.org/Encode-Base32-Crockford/> .
+The git repository for this distribution is available at
+L<https://github.com/gbarr/Encode-Base32-Crockford>
 
 =cut
